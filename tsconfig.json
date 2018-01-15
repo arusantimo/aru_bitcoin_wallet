@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": false,
+    // "baseUrl": ".",
+    // "paths": {
+    //   "@/*": [
+    //     "src/app/*"
+    //   ]
+    // },
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "outDir": "./build/dist",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "locale": "ko",
+    "pretty": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "noImplicitAny": false,
+    "jsx": "react",
+    "jsxFactory": "React.createElement",
+    "allowJs": false,
+    // "moduleResolution": "node",
+    "noUnusedLocals": true
+  },
+  "exclude": [
+    "node_modules",
+    "test"
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}
