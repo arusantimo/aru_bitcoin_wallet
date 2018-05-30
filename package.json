@@ -76,6 +76,8 @@
     "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
+    "@types/koa-helmet": "^3.1.2",
+    "bitcore-lib": "^0.15.0",
     "history": "^4.7.2",
     "koa": "^2.4.1",
     "koa-helmet": "^3.3.0",

@@ -31,9 +31,7 @@ const Base: webpack.Configuration = {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
     modules: ['node_modules', 'src'],
   },
-
   devtool: Env.isDev ? 'cheap-module-source-map' : 'source-map',
-
   plugins: [
     new CheckerPlugin(),
   ],

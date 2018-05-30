@@ -1,22 +1,19 @@
 import * as React from 'react';
-import { Page } from '../../components';
 
 export interface HomePageProps {
   data: any;
 }
-
 export interface HomePageState {
   data: any;
 }
 
 export class HomePage extends React.Component<HomePageProps, HomePageState> {
-  static async initFetch() {
+  static async initFetch(): Promise<any> {
     const data = await Promise.resolve('111');
     return data;
   }
-  constructor(props: any) {
+  constructor(props: HomePageProps) {
     super(props);
-    console.log(1111);
   }
   async componentWillMount() {
     const data = await HomePage.initFetch();
@@ -24,10 +21,7 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
   }
   render() {
     return (
-      <Page name="home">
-        home page 홈페이지 HOT loder22
-
-      </Page>
+      <p>home page 홈페이지 HOT loder22</p>
     );
   }
 }

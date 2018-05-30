@@ -1,4 +1,5 @@
 import * as koa from 'koa';
+import * as helmet from 'koa-helmet';
 import * as logger from 'koa-logger';
 import * as Router from 'koa-router';
 import * as koaStatic from 'koa-static';
@@ -16,19 +17,40 @@ import { WebpackDev, WebpackHot } from './middlewares';
 import { Routes } from './router';
 
 const app = new koa();
+
 app.use(logger());
-if (Env.isDev) {
+
+if (Env.isDev) { // Env is Dev
   const compiler = webpack(WebpackConfig);
   app.use(WebpackDev(compiler, {
-    headers: { 'Access-Control-Allow-Origin': '*' },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
     publicPath: PublicPath,
     serverSideRender: true,
     stats: Server.stats || {},
   }));
   app.use(WebpackHot((compiler as any).compilers.find((com: webpack.Compiler) => com.name === Client.name), {}));
+  app.use(koaStatic('.'));
+} else {
+  app.use((ctx, next) => {
+    return next();
+  });
+  app.use(helmet());
+  app.use(helmet.contentSecurityPolicy({
+    directives: {
+      scriptSrc: [
+        `'self'`,
+        `'unsafe-inline'`,
+        // (ctx) => {
+        //   const nonce = getResponseNonce(ctx);
+        //   return `'nonce-${nonce}'`;
+        // },
+      ],
+    },
+  }));
+  app.use(koaStatic(path.join(__dirname, 'public')));
 }
-
-app.use(koaStatic(Env.isDev ? '.' : path.join(__dirname, 'public')));
 
 const router = new Router();
 router.get('*', async (ctx) => {
@@ -39,7 +61,7 @@ router.get('*', async (ctx) => {
     scripts: [],
     data: [],
   };
-  if (Env.isDev) {
+  if (Env.isDev) { // Env is Dev
     const { webpackStats } = ctx.state;
     const { assetsByChunkName } = webpackStats.toJson().children.find((item: any) => item.name === Client.name);
     props.scripts.push(assetsByChunkName.vendor[0]);
